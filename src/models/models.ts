@@ -1,3 +1,15 @@
+export class Service {
+  constructor(
+    public count: number,
+    public name: string,
+    public price: number
+  ) {}
+}
+
+export class Discount {
+  constructor(public name: string, public rate: number) {}
+}
+
 export const response = {
   items: {
     i_1: { count: 1, name: "여성컷", price: 35000 },

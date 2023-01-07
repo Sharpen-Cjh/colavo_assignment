@@ -1,9 +1,34 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 
+import ServiceCard from "./ServiceCard";
+import { Service } from "../models/models";
 import { ReactComponent as CloseIcon } from "../assets/Close.svg";
-import Card from "./Card";
 
-export default function ServiceMenu() {
+export default function ServiceMenu(): React.ReactElement {
+  const [serviceList, setServiceList] = useState<Service[]>([]);
+
+  useEffect(() => {
+    const url =
+      "https://us-central1-colavolab.cloudfunctions.net/requestAssignmentCalculatorData";
+    const fetchData = async () => {
+      try {
+        const itemsArray = [];
+        const response = await fetch(url);
+        const { items } = await response.json();
+
+        for (const item in items) {
+          itemsArray.push(items[item]);
+        }
+
+        setServiceList(itemsArray);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <ServiceMenuPage>
       <ServiceMenuWrapper>
@@ -12,7 +37,9 @@ export default function ServiceMenu() {
           <CloseIcon />
         </ServiceMenuHeader>
         <ServiceMenuBody>
-          <Card />
+          {serviceList.map((service) => (
+            <ServiceCard key={service.name} service={service} />
+          ))}
         </ServiceMenuBody>
         <ServiceMenuFooter>
           <ServiceMenuTotalAmountWrapper>

@@ -1,14 +1,19 @@
 import styled from "styled-components";
 
+import { Discount } from "../models/models";
 import CheckBox from "./CheckBox";
 
-const Card = () => {
+type DiscountProp = {
+  discountItem: Discount;
+};
+
+const DiscountCard = ({ discountItem }: DiscountProp) => {
   return (
     <CardWrapper>
-      <ServiceItem>
-        <ServiceName>샤기컷</ServiceName>
-        <ServicePrice>3,000원</ServicePrice>
-      </ServiceItem>
+      <DiscountItem>
+        <DiscountName>{discountItem.name}</DiscountName>
+        <DiscountRate>{discountItem.rate}</DiscountRate>
+      </DiscountItem>
       <CheckBox />
     </CardWrapper>
   );
@@ -25,20 +30,20 @@ const CardWrapper = styled.div`
   box-shadow: rgb(0 0 0 / 10%) 0px 2px 8px;
   background-color: rgb(255, 255, 255);
 `;
-const ServiceItem = styled.div`
+const DiscountItem = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
 `;
-const ServiceName = styled.div`
+const DiscountName = styled.div`
   font-size: 15px;
   font-weight: bold;
   word-break: break-word;
   letter-spacing: -0.2px;
 `;
-const ServicePrice = styled.div`
+const DiscountRate = styled.div`
   font-size: 15px;
   font-weight: bold;
 `;
 
-export default Card;
+export default DiscountCard;

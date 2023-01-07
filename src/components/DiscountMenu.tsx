@@ -1,8 +1,33 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 
+import DiscountCard from "./DiscountCard";
+import { Discount } from "../models/models";
 import { ReactComponent as CloseIcon } from "../assets/Close.svg";
 
 export default function DiscountMenu() {
+  const [discountList, setDiscountList] = useState<Discount[]>([]);
+
+  useEffect(() => {
+    const url =
+      "https://us-central1-colavolab.cloudfunctions.net/requestAssignmentCalculatorData";
+    const fetchData = async () => {
+      try {
+        const discountArray = [];
+        const response = await fetch(url);
+        const { discounts } = await response.json();
+
+        for (const discount in discounts) {
+          discountArray.push(discounts[discount]);
+        }
+
+        setDiscountList(discountArray);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
   return (
     <DiscountMenuPage>
       <DiscountMenuWrapper>
@@ -10,7 +35,11 @@ export default function DiscountMenu() {
           <DiscountMenuTitle>할인 메뉴</DiscountMenuTitle>
           <CloseIcon />
         </DiscountMenuHeader>
-        <DiscountMenuBody></DiscountMenuBody>
+        <DiscountMenuBody>
+          {discountList.map((discountItem) => (
+            <DiscountCard key={discountItem.name} discountItem={discountItem} />
+          ))}
+        </DiscountMenuBody>
         <DiscountMenuFooter>
           <DiscountMenuTotalAmountWrapper>
             <DiscountTotalAmountText>합계</DiscountTotalAmountText>
