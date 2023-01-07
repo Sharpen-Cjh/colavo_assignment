@@ -1,16 +1,40 @@
+import { useState } from "react";
 import styled from "styled-components";
+import DiscountMenu from "../components/DiscountMenu";
 
 import DiscountMenuButton from "../components/DiscountMenuButton";
+import ServiceMenu from "../components/ServiceMenu";
 import ServiceMenuButton from "../components/ServiceMenuButton";
 
 const Cart = () => {
+  const [serviceIsShown, setServiceIsShown] = useState(false);
+  const [discountIsShown, setDiscountIsShown] = useState(false);
+
+  const ShowServiceMenu = () => {
+    setServiceIsShown(true);
+  };
+
+  const HideServiceMenu = () => {
+    setServiceIsShown(false);
+  };
+
+  const ShowDiscountMenu = () => {
+    setDiscountIsShown(true);
+  };
+
+  const HideDiscountMenu = () => {
+    setDiscountIsShown(false);
+  };
+
   return (
     <CartPage>
+      {serviceIsShown && <ServiceMenu onClose={HideServiceMenu} />}
+      {discountIsShown && <DiscountMenu onClose={HideDiscountMenu} />}
       <CartWrapper>
         <CartHeader>
           <ButtonWrapper>
-            <ServiceMenuButton />
-            <DiscountMenuButton />
+            <ServiceMenuButton onShowServiceMenu={ShowServiceMenu} />
+            <DiscountMenuButton onShowDiscountMenu={ShowDiscountMenu} />
           </ButtonWrapper>
         </CartHeader>
         <CartBody></CartBody>
@@ -35,7 +59,7 @@ const CartPage = styled.div`
 
 const CartWrapper = styled.div`
   width: 538px;
-  height: 742px;
+  height: 500px;
   border: 1px solid lightgray;
   border-radius: 10px;
   box-shadow: rgb(0 0 0 / 10%) 0px 2px 8px 0px;
@@ -57,7 +81,7 @@ const CartBody = styled.div`
   background-color: rgb(248, 249, 250);
   min-height: 200px;
   padding: 18px;
-  margin-bottom: 400px;
+  margin-bottom: 200px;
 `;
 
 const CartFooter = styled.div`

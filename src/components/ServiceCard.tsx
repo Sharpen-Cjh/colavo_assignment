@@ -20,7 +20,7 @@ const ServiceCard = ({ service }: ServiceProp) => {
 };
 
 const CardWrapper = styled.div`
-  width: 100%;
+  width: 90%;
   height: 50px;
   display: flex;
   flex-direction: row;
@@ -29,6 +29,7 @@ const CardWrapper = styled.div`
   padding: 10px;
   box-shadow: rgb(0 0 0 / 10%) 0px 2px 8px;
   background-color: rgb(255, 255, 255);
+  margin: 15px;
 `;
 const ServiceItem = styled.div`
   display: flex;

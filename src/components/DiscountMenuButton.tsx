@@ -1,15 +1,18 @@
+import React from "react";
 import styled from "styled-components";
 
 import PlusButtonIcon from "../shared/PlusButtonIcon";
 
-export default function DiscountMenuButton() {
+const DiscountMenuButton: React.FC<{ onShowDiscountMenu: () => void }> = ({
+  onShowDiscountMenu,
+}) => {
   return (
-    <Button>
+    <Button onClick={onShowDiscountMenu}>
       <PlusButtonIcon width={20} height={20} fill={"rgb(255, 118, 171)"} />
       <ButtonName>할인 메뉴</ButtonName>
     </Button>
   );
-}
+};
 
 const Button = styled.button`
   width: 238.78px;
@@ -32,3 +35,5 @@ const Button = styled.button`
 const ButtonName = styled.div`
   margin-left: 15px;
 `;
+
+export default DiscountMenuButton;

@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 
+import Modal from "../shared/Modal";
 import DiscountCard from "./DiscountCard";
+import CloseIcon from "../shared/CloseIcon";
 import { Discount } from "../models/models";
-import { ReactComponent as CloseIcon } from "../assets/Close.svg";
 
-export default function DiscountMenu() {
+const DiscountMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [discountList, setDiscountList] = useState<Discount[]>([]);
 
   useEffect(() => {
@@ -29,11 +30,11 @@ export default function DiscountMenu() {
     fetchData();
   }, []);
   return (
-    <DiscountMenuPage>
+    <Modal onClose={onClose}>
       <DiscountMenuWrapper>
         <DiscountMenuHeader>
           <DiscountMenuTitle>할인 메뉴</DiscountMenuTitle>
-          <CloseIcon />
+          <CloseIcon onClose={onClose} />
         </DiscountMenuHeader>
         <DiscountMenuBody>
           {discountList.map((discountItem) => (
@@ -48,21 +49,12 @@ export default function DiscountMenu() {
           <NextStepButton>다음</NextStepButton>
         </DiscountMenuFooter>
       </DiscountMenuWrapper>
-    </DiscountMenuPage>
+    </Modal>
   );
-}
-
-const DiscountMenuPage = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: rgb(248, 249, 250);
-`;
+};
 
 const DiscountMenuWrapper = styled.div`
   width: 538px;
-  height: 742px;
   border: 1px solid lightgray;
   border-radius: 10px;
   box-shadow: rgb(0 0 0 / 10%) 0px 2px 8px 0px;
@@ -76,20 +68,28 @@ const DiscountMenuHeader = styled.div`
 `;
 
 const DiscountMenuTitle = styled.div`
+  width: 100%;
   font-size: 20px;
   font-weight: bold;
   letter-spacing: -0.3px;
   color: rgb(37, 38, 42);
-  width: 100%;
   text-align: center;
 `;
 
 const DiscountMenuBody = styled.div`
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   border-radius: 10px;
   background-color: rgb(248, 249, 250);
-  min-height: 300px;
-  padding: 18px;
-  margin-bottom: 250px;
+  padding: 10px;
+  margin-bottom: 20px;
+  overflow: auto;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const DiscountMenuFooter = styled.div`
@@ -110,8 +110,8 @@ const DiscountTotalAmount = styled.div`
 `;
 
 const NextStepButton = styled.button`
-  margin-top: 18px;
   width: 100%;
+  margin-top: 18px;
   padding: 15px;
   font-size: 18px;
   font-weight: bold;
@@ -122,3 +122,5 @@ const NextStepButton = styled.button`
   color: rgb(255, 255, 255);
   cursor: pointer;
 `;
+
+export default DiscountMenu;

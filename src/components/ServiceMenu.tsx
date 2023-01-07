@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import ServiceCard from "./ServiceCard";
+import Modal from "../shared/Modal";
 import { Service } from "../models/models";
-import { ReactComponent as CloseIcon } from "../assets/Close.svg";
+import CloseIcon from "../shared/CloseIcon";
 
-export default function ServiceMenu(): React.ReactElement {
+const ServiceMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [serviceList, setServiceList] = useState<Service[]>([]);
 
   useEffect(() => {
@@ -30,11 +31,11 @@ export default function ServiceMenu(): React.ReactElement {
   }, []);
 
   return (
-    <ServiceMenuPage>
+    <Modal onClose={onClose}>
       <ServiceMenuWrapper>
         <ServiceMenuHeader>
           <ServiceMenuTitle>시술 메뉴</ServiceMenuTitle>
-          <CloseIcon />
+          <CloseIcon onClose={onClose} />
         </ServiceMenuHeader>
         <ServiceMenuBody>
           {serviceList.map((service) => (
@@ -49,21 +50,12 @@ export default function ServiceMenu(): React.ReactElement {
           <NextStepButton>다음</NextStepButton>
         </ServiceMenuFooter>
       </ServiceMenuWrapper>
-    </ServiceMenuPage>
+    </Modal>
   );
-}
-
-const ServiceMenuPage = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: rgb(248, 249, 250);
-`;
+};
 
 const ServiceMenuWrapper = styled.div`
   width: 538px;
-  height: 742px;
   border: 1px solid lightgray;
   border-radius: 10px;
   box-shadow: rgb(0 0 0 / 10%) 0px 2px 8px 0px;
@@ -86,15 +78,19 @@ const ServiceMenuTitle = styled.div`
 `;
 
 const ServiceMenuBody = styled.div`
+  height: 400px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   border-radius: 10px;
   background-color: rgb(248, 249, 250);
-  min-height: 300px;
-  margin-bottom: 250px;
-  padding: 20px;
+  padding: 10px;
+  margin-bottom: 20px;
+  overflow: auto;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const ServiceMenuFooter = styled.div`
@@ -115,8 +111,8 @@ const ServiceTotalAmount = styled.div`
 `;
 
 const NextStepButton = styled.button`
-  margin-top: 18px;
   width: 100%;
+  margin-top: 18px;
   padding: 15px;
   font-size: 18px;
   font-weight: bold;
@@ -127,3 +123,5 @@ const NextStepButton = styled.button`
   color: rgb(255, 255, 255);
   cursor: pointer;
 `;
+
+export default ServiceMenu;

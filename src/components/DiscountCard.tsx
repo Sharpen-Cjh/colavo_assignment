@@ -20,7 +20,7 @@ const DiscountCard = ({ discountItem }: DiscountProp) => {
 };
 
 const CardWrapper = styled.div`
-  width: 100%;
+  width: 90%;
   height: 50px;
   display: flex;
   flex-direction: row;
