@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 import { Discount } from "../models/models";
-import CheckBox from "./CheckBox";
 
 type DiscountProp = {
   discountItem: Discount;
@@ -14,7 +13,7 @@ const DiscountCard = ({ discountItem }: DiscountProp) => {
         <DiscountName>{discountItem.name}</DiscountName>
         <DiscountRate>{discountItem.rate}</DiscountRate>
       </DiscountItem>
-      <CheckBox />
+      <CheckBoxInput type="checkbox" name={discountItem.name} />
     </CardWrapper>
   );
 };
@@ -44,6 +43,11 @@ const DiscountName = styled.div`
 const DiscountRate = styled.div`
   font-size: 15px;
   font-weight: bold;
+`;
+const CheckBoxInput = styled.input`
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
 `;
 
 export default DiscountCard;

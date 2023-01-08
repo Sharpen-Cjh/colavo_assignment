@@ -1,13 +1,20 @@
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../store/cartSlice";
 import styled from "styled-components";
 
 import ServiceCard from "./ServiceCard";
 import Modal from "../shared/Modal";
 import { Service } from "../models/models";
 import CloseIcon from "../shared/CloseIcon";
+import { RootState } from "../store/store";
 
 const ServiceMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [serviceList, setServiceList] = useState<Service[]>([]);
+  const [checkedList, setCheckedList] = useState<string[]>([]);
+  const dispatch = useDispatch();
+  const cart = useSelector((state: RootState) => state.cart);
+  console.log(cart);
 
   useEffect(() => {
     const url =
@@ -30,6 +37,14 @@ const ServiceMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     fetchData();
   }, []);
 
+  const onCheckedItem = (checked: boolean, item: string) => {
+    if (checked) {
+      setCheckedList([...checkedList, item]);
+    } else {
+      setCheckedList(checkedList.filter((element) => element !== item));
+    }
+  };
+
   return (
     <Modal onClose={onClose}>
       <ServiceMenuWrapper>
@@ -39,7 +54,14 @@ const ServiceMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         </ServiceMenuHeader>
         <ServiceMenuBody>
           {serviceList.map((service) => (
-            <ServiceCard key={service.name} service={service} />
+            <ServiceCard
+              key={service.name}
+              service={service}
+              onClick={() => {
+                dispatch(addToCart(service));
+              }}
+              onCheckItem={onCheckedItem}
+            />
           ))}
         </ServiceMenuBody>
         <ServiceMenuFooter>
@@ -47,7 +69,13 @@ const ServiceMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             <ServiceTotalAmountText>합계</ServiceTotalAmountText>
             <ServiceTotalAmount>1,000원</ServiceTotalAmount>
           </ServiceMenuTotalAmountWrapper>
-          <NextStepButton>다음</NextStepButton>
+          <NextStepButton
+            onClick={() => {
+              onClose();
+            }}
+          >
+            저 장
+          </NextStepButton>
         </ServiceMenuFooter>
       </ServiceMenuWrapper>
     </Modal>

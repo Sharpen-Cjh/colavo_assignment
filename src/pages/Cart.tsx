@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 import styled from "styled-components";
 import DiscountMenu from "../components/DiscountMenu";
 
@@ -9,6 +11,7 @@ import ServiceMenuButton from "../components/ServiceMenuButton";
 const Cart = () => {
   const [serviceIsShown, setServiceIsShown] = useState(false);
   const [discountIsShown, setDiscountIsShown] = useState(false);
+  const cart = useSelector((state: RootState) => state.cart);
 
   const ShowServiceMenu = () => {
     setServiceIsShown(true);

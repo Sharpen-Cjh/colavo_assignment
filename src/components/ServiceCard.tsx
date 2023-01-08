@@ -1,20 +1,28 @@
 import styled from "styled-components";
 
 import { Service } from "../models/models";
-import CheckBox from "./CheckBox";
 
 type ServiceProp = {
   service: Service;
+  onCheckItem: (checked: boolean, name: string) => void;
+  onClick: () => void;
 };
 
-const ServiceCard = ({ service }: ServiceProp) => {
+const ServiceCard = ({ service, onCheckItem, onClick }: ServiceProp) => {
   return (
     <CardWrapper>
       <ServiceItem>
         <ServiceName>{service.name}</ServiceName>
         <ServicePrice>{service.price}</ServicePrice>
       </ServiceItem>
-      <CheckBox />
+      <CheckBoxInput
+        onClick={onClick}
+        onChange={(event) => {
+          onCheckItem(event.target.checked, event.target.name);
+        }}
+        type="checkbox"
+        name={service.name}
+      />
     </CardWrapper>
   );
 };
@@ -45,6 +53,12 @@ const ServiceName = styled.div`
 const ServicePrice = styled.div`
   font-size: 15px;
   font-weight: bold;
+`;
+
+const CheckBoxInput = styled.input`
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
 `;
 
 export default ServiceCard;

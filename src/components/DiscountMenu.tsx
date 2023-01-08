@@ -46,7 +46,7 @@ const DiscountMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             <DiscountTotalAmountText>합계</DiscountTotalAmountText>
             <DiscountTotalAmount>1,000원</DiscountTotalAmount>
           </DiscountMenuTotalAmountWrapper>
-          <NextStepButton>다음</NextStepButton>
+          <NextStepButton onClick={onClose}>저 장</NextStepButton>
         </DiscountMenuFooter>
       </DiscountMenuWrapper>
     </Modal>
