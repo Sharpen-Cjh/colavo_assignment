@@ -1,27 +1,32 @@
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
+import { RootState } from "../store/store";
+import { addToCart, addNameToCart } from "../store/cartSlice";
 import { Service } from "../models/models";
 
 type ServiceProp = {
   service: Service;
-  onCheckItem: (checked: boolean, name: string) => void;
-  onClick: () => void;
 };
 
-const ServiceCard = ({ service, onCheckItem, onClick }: ServiceProp) => {
+const ServiceCard = ({ service }: ServiceProp) => {
+  const { cart } = useSelector((state: RootState) => state);
+  const dispatch = useDispatch();
+
   return (
     <CardWrapper>
-      <ServiceItem>
+      <ServiceItemWrapper>
         <ServiceName>{service.name}</ServiceName>
-        <ServicePrice>{service.price}</ServicePrice>
-      </ServiceItem>
+        <ServicePrice>{service.price.toLocaleString("ko-KR")}원</ServicePrice>
+      </ServiceItemWrapper>
       <CheckBoxInput
-        onClick={onClick}
-        onChange={(event) => {
-          onCheckItem(event.target.checked, event.target.name);
+        onChange={() => {
+          dispatch(addToCart(service));
+          dispatch(addNameToCart(service));
         }}
         type="checkbox"
         name={service.name}
+        checked={cart.includes(service.name)}
       />
     </CardWrapper>
   );
@@ -33,13 +38,14 @@ const CardWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   border-radius: 10px;
   padding: 10px;
   box-shadow: rgb(0 0 0 / 10%) 0px 2px 8px;
   background-color: rgb(255, 255, 255);
   margin: 15px;
 `;
-const ServiceItem = styled.div`
+const ServiceItemWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;

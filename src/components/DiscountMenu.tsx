@@ -1,13 +1,21 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
-import Modal from "../shared/Modal";
+import { Discount } from "../models/models";
+import {
+  addDiscountToCart,
+  discount,
+  calculatorTotalAmount,
+} from "../store/cartSlice";
+
 import DiscountCard from "./DiscountCard";
 import CloseIcon from "../shared/CloseIcon";
-import { Discount } from "../models/models";
+import Modal from "../shared/Modal";
 
 const DiscountMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [discountList, setDiscountList] = useState<Discount[]>([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const url =
@@ -34,19 +42,30 @@ const DiscountMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       <DiscountMenuWrapper>
         <DiscountMenuHeader>
           <DiscountMenuTitle>할인 메뉴</DiscountMenuTitle>
-          <CloseIcon onClose={onClose} />
+          <CloseIcon width={24} onClose={onClose} />
         </DiscountMenuHeader>
         <DiscountMenuBody>
           {discountList.map((discountItem) => (
-            <DiscountCard key={discountItem.name} discountItem={discountItem} />
+            <DiscountCard
+              key={discountItem.name}
+              discountItem={discountItem}
+              onClick={() => {
+                dispatch(addDiscountToCart(discountItem));
+              }}
+            />
           ))}
         </DiscountMenuBody>
         <DiscountMenuFooter>
-          <DiscountMenuTotalAmountWrapper>
-            <DiscountTotalAmountText>합계</DiscountTotalAmountText>
-            <DiscountTotalAmount>1,000원</DiscountTotalAmount>
-          </DiscountMenuTotalAmountWrapper>
-          <NextStepButton onClick={onClose}>저 장</NextStepButton>
+          <DiscountMenuTotalAmountWrapper></DiscountMenuTotalAmountWrapper>
+          <NextStepButton
+            onClick={() => {
+              dispatch(discount());
+              dispatch(calculatorTotalAmount());
+              onClose();
+            }}
+          >
+            할 인 적 용
+          </NextStepButton>
         </DiscountMenuFooter>
       </DiscountMenuWrapper>
     </Modal>
@@ -99,14 +118,6 @@ const DiscountMenuFooter = styled.div`
 const DiscountMenuTotalAmountWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-`;
-const DiscountTotalAmountText = styled.div`
-  font-weight: 700;
-  font-size: 18px;
-`;
-const DiscountTotalAmount = styled.div`
-  font-weight: 700;
-  font-size: 18px;
 `;
 
 const NextStepButton = styled.button`

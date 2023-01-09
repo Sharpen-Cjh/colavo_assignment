@@ -1,20 +1,17 @@
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../store/cartSlice";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+
+import { discount, calculatorTotalAmount } from "../store/cartSlice";
+import { Service } from "../models/models";
 
 import ServiceCard from "./ServiceCard";
 import Modal from "../shared/Modal";
-import { Service } from "../models/models";
 import CloseIcon from "../shared/CloseIcon";
-import { RootState } from "../store/store";
 
 const ServiceMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [serviceList, setServiceList] = useState<Service[]>([]);
-  const [checkedList, setCheckedList] = useState<string[]>([]);
   const dispatch = useDispatch();
-  const cart = useSelector((state: RootState) => state.cart);
-  console.log(cart);
 
   useEffect(() => {
     const url =
@@ -37,44 +34,27 @@ const ServiceMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     fetchData();
   }, []);
 
-  const onCheckedItem = (checked: boolean, item: string) => {
-    if (checked) {
-      setCheckedList([...checkedList, item]);
-    } else {
-      setCheckedList(checkedList.filter((element) => element !== item));
-    }
-  };
-
   return (
     <Modal onClose={onClose}>
       <ServiceMenuWrapper>
         <ServiceMenuHeader>
           <ServiceMenuTitle>시술 메뉴</ServiceMenuTitle>
-          <CloseIcon onClose={onClose} />
+          <CloseIcon width={24} onClose={onClose} />
         </ServiceMenuHeader>
         <ServiceMenuBody>
           {serviceList.map((service) => (
-            <ServiceCard
-              key={service.name}
-              service={service}
-              onClick={() => {
-                dispatch(addToCart(service));
-              }}
-              onCheckItem={onCheckedItem}
-            />
+            <ServiceCard key={service.name} service={service} />
           ))}
         </ServiceMenuBody>
         <ServiceMenuFooter>
-          <ServiceMenuTotalAmountWrapper>
-            <ServiceTotalAmountText>합계</ServiceTotalAmountText>
-            <ServiceTotalAmount>1,000원</ServiceTotalAmount>
-          </ServiceMenuTotalAmountWrapper>
           <NextStepButton
             onClick={() => {
+              dispatch(discount());
+              dispatch(calculatorTotalAmount());
               onClose();
             }}
           >
-            저 장
+            다 음
           </NextStepButton>
         </ServiceMenuFooter>
       </ServiceMenuWrapper>
@@ -124,18 +104,6 @@ const ServiceMenuBody = styled.div`
 const ServiceMenuFooter = styled.div`
   display: flex;
   flex-direction: column;
-`;
-const ServiceMenuTotalAmountWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-const ServiceTotalAmountText = styled.div`
-  font-weight: 700;
-  font-size: 18px;
-`;
-const ServiceTotalAmount = styled.div`
-  font-weight: 700;
-  font-size: 18px;
 `;
 
 const NextStepButton = styled.button`

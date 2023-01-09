@@ -1,15 +1,17 @@
-type Props = {
-  onClose: () => void;
+type CloseIconProps = {
+  onClose?: () => void;
+  onClick?: () => void;
+  width?: number;
 };
 
-const CloseIcon = (props: Props) => {
+const CloseIcon = (props: CloseIconProps) => {
   return (
     <svg
-      onClick={props.onClose}
+      onClick={props.onClose || props.onClick}
       xmlns="http://www.w3.org/2000/svg"
       fill="rgb(114, 121, 128)"
-      width="24"
-      height="24"
+      width={props.width}
+      height={props.width}
       viewBox="0 0 72 72"
       cursor="pointer"
     >
