@@ -2,23 +2,21 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 
-import { RootState } from "../store/store";
-
-import DiscountMenu from "../components/DiscountMenu";
-import DiscountMenuButton from "../components/DiscountMenuButton";
-import ServiceMenu from "../components/ServiceMenu";
-import ServiceMenuButton from "../components/ServiceMenuButton";
-import ServiceItemCard from "../components/ServiceItemCard";
-import DiscountItemCard from "../components/DiscountItemCard";
+import { RootState } from "../../store/store";
+import DiscountMenu from "../discountMenu/DiscountMenu";
+import DiscountMenuButton from "./DiscountMenuButton";
+import ServiceMenu from "../serviceMenu/ServiceMenu";
+import ServiceMenuButton from "./ServiceMenuButton";
+import CartServiceCard from "./CartServiceCard";
+import CartDiscountCard from "./CartDiscountCard";
 
 const Cart = () => {
   const [serviceIsShown, setServiceIsShown] = useState(false);
   const [discountIsShown, setDiscountIsShown] = useState(false);
-
   const { serviceItems, discountItems, totalAmount } = useSelector(
     (state: RootState) => state
   );
-  console.log(serviceItems);
+
   const ShowServiceMenu = () => {
     setServiceIsShown(true);
   };
@@ -48,10 +46,10 @@ const Cart = () => {
         </CartHeader>
         <CartBody>
           {serviceItems.map((serviceItem) => (
-            <ServiceItemCard key={serviceItem.name} serviceItem={serviceItem} />
+            <CartServiceCard key={serviceItem.name} serviceItem={serviceItem} />
           ))}
           {discountItems.map((discountItem) => (
-            <DiscountItemCard
+            <CartDiscountCard
               key={discountItem.name}
               discountItem={discountItem}
             />

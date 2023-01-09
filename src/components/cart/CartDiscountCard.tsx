@@ -2,17 +2,19 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
-import { calculatorTotalAmount, removeDiscountItem } from "../store/cartSlice";
-import { DiscountItem } from "../store/types";
-
-import CloseIcon from "../shared/CloseIcon";
+import {
+  calculatorTotalAmount,
+  removeDiscountItem,
+} from "../../store/cartSlice";
+import { DiscountItem } from "../../store/types";
+import CloseIcon from "../../shared/CloseIcon";
 import DiscountChangeMenu from "./DiscountChangeMenu";
 
 type DiscountItemCardProp = {
   discountItem: DiscountItem;
 };
 
-const DiscountItemCard = ({ discountItem }: DiscountItemCardProp) => {
+const CartDiscountCard = ({ discountItem }: DiscountItemCardProp) => {
   const [discountChangeMenuIsShown, setDiscountChangeMenuIsShown] = useState(
     false
   );
@@ -136,4 +138,4 @@ const DiscountChangeButton = styled.div`
   cursor: pointer;
 `;
 
-export default DiscountItemCard;
+export default CartDiscountCard;
