@@ -1,15 +1,24 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
-import DiscountMenu from "../components/DiscountMenu";
 
+import { RootState } from "../store/store";
+
+import DiscountMenu from "../components/DiscountMenu";
 import DiscountMenuButton from "../components/DiscountMenuButton";
 import ServiceMenu from "../components/ServiceMenu";
 import ServiceMenuButton from "../components/ServiceMenuButton";
+import ServiceItemCard from "../components/ServiceItemCard";
+import DiscountItemCard from "../components/DiscountItemCard";
 
 const Cart = () => {
   const [serviceIsShown, setServiceIsShown] = useState(false);
   const [discountIsShown, setDiscountIsShown] = useState(false);
 
+  const { serviceItems, discountItems, totalAmount } = useSelector(
+    (state: RootState) => state
+  );
+  console.log(serviceItems);
   const ShowServiceMenu = () => {
     setServiceIsShown(true);
   };
@@ -37,10 +46,20 @@ const Cart = () => {
             <DiscountMenuButton onShowDiscountMenu={ShowDiscountMenu} />
           </ButtonWrapper>
         </CartHeader>
-        <CartBody></CartBody>
+        <CartBody>
+          {serviceItems.map((serviceItem) => (
+            <ServiceItemCard key={serviceItem.name} serviceItem={serviceItem} />
+          ))}
+          {discountItems.map((discountItem) => (
+            <DiscountItemCard
+              key={discountItem.name}
+              discountItem={discountItem}
+            />
+          ))}
+        </CartBody>
         <CartFooter>
           <TotalAmountText>합계</TotalAmountText>
-          <TotalAmount>1,000원</TotalAmount>
+          <TotalAmount>{totalAmount.toLocaleString("ko-KR")}원</TotalAmount>
         </CartFooter>
       </CartWrapper>
     </CartPage>
@@ -77,11 +96,19 @@ const ButtonWrapper = styled.div`
 `;
 
 const CartBody = styled.div`
+  height: 350px;
+  display: flex;
+  flex-direction: column;
   border-radius: 10px;
   background-color: rgb(248, 249, 250);
-  min-height: 200px;
+  justify-content: space-between;
+  align-items: center;
   padding: 18px;
-  margin-bottom: 200px;
+  margin-bottom: 50px;
+  overflow: auto;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const CartFooter = styled.div`

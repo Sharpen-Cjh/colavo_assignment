@@ -1,20 +1,35 @@
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
 import { Discount } from "../models/models";
-import CheckBox from "./CheckBox";
+
+import { addNameToCart } from "../store/cartSlice";
+import { RootState } from "../store/store";
 
 type DiscountProp = {
   discountItem: Discount;
+  onClick: () => void;
 };
 
-const DiscountCard = ({ discountItem }: DiscountProp) => {
+const DiscountCard = ({ discountItem, onClick }: DiscountProp) => {
+  const { cart } = useSelector((state: RootState) => state);
+  const dispatch = useDispatch();
+
   return (
     <CardWrapper>
       <DiscountItem>
         <DiscountName>{discountItem.name}</DiscountName>
-        <DiscountRate>{discountItem.rate}</DiscountRate>
+        <DiscountRate>{Math.floor(discountItem.rate * 100)}%</DiscountRate>
       </DiscountItem>
-      <CheckBox />
+      <CheckBoxInput
+        onChange={() => {
+          dispatch(addNameToCart(discountItem));
+        }}
+        type="checkbox"
+        name={discountItem.name}
+        onClick={onClick}
+        checked={cart.includes(discountItem.name)}
+      />
     </CardWrapper>
   );
 };
@@ -25,6 +40,8 @@ const CardWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+
   border-radius: 10px;
   padding: 10px;
   box-shadow: rgb(0 0 0 / 10%) 0px 2px 8px;
@@ -44,6 +61,11 @@ const DiscountName = styled.div`
 const DiscountRate = styled.div`
   font-size: 15px;
   font-weight: bold;
+`;
+const CheckBoxInput = styled.input`
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
 `;
 
 export default DiscountCard;

@@ -1,13 +1,17 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+
+import { discount, calculatorTotalAmount } from "../store/cartSlice";
+import { Service } from "../models/models";
 
 import ServiceCard from "./ServiceCard";
 import Modal from "../shared/Modal";
-import { Service } from "../models/models";
 import CloseIcon from "../shared/CloseIcon";
 
 const ServiceMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [serviceList, setServiceList] = useState<Service[]>([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const url =
@@ -35,7 +39,7 @@ const ServiceMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       <ServiceMenuWrapper>
         <ServiceMenuHeader>
           <ServiceMenuTitle>시술 메뉴</ServiceMenuTitle>
-          <CloseIcon onClose={onClose} />
+          <CloseIcon width={24} onClose={onClose} />
         </ServiceMenuHeader>
         <ServiceMenuBody>
           {serviceList.map((service) => (
@@ -43,11 +47,15 @@ const ServiceMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           ))}
         </ServiceMenuBody>
         <ServiceMenuFooter>
-          <ServiceMenuTotalAmountWrapper>
-            <ServiceTotalAmountText>합계</ServiceTotalAmountText>
-            <ServiceTotalAmount>1,000원</ServiceTotalAmount>
-          </ServiceMenuTotalAmountWrapper>
-          <NextStepButton>다음</NextStepButton>
+          <NextStepButton
+            onClick={() => {
+              dispatch(discount());
+              dispatch(calculatorTotalAmount());
+              onClose();
+            }}
+          >
+            다 음
+          </NextStepButton>
         </ServiceMenuFooter>
       </ServiceMenuWrapper>
     </Modal>
@@ -96,18 +104,6 @@ const ServiceMenuBody = styled.div`
 const ServiceMenuFooter = styled.div`
   display: flex;
   flex-direction: column;
-`;
-const ServiceMenuTotalAmountWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-const ServiceTotalAmountText = styled.div`
-  font-weight: 700;
-  font-size: 18px;
-`;
-const ServiceTotalAmount = styled.div`
-  font-weight: 700;
-  font-size: 18px;
 `;
 
 const NextStepButton = styled.button`
