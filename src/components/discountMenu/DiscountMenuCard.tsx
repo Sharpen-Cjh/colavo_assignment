@@ -1,17 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
-import { Discount } from "../models/models";
-
-import { addNameToCart } from "../store/cartSlice";
-import { RootState } from "../store/store";
+import { Discount } from "../../models/models";
+import { addNameToCart } from "../../store/cartSlice";
+import { RootState } from "../../store/store";
 
 type DiscountProp = {
   discountItem: Discount;
   onClick: () => void;
 };
 
-const DiscountCard = ({ discountItem, onClick }: DiscountProp) => {
+const DiscountMenuCard = ({ discountItem, onClick }: DiscountProp) => {
   const { cart } = useSelector((state: RootState) => state);
   const dispatch = useDispatch();
 
@@ -68,4 +67,4 @@ const CheckBoxInput = styled.input`
   border-radius: 10px;
 `;
 
-export default DiscountCard;
+export default DiscountMenuCard;

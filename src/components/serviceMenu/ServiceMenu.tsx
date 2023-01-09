@@ -2,19 +2,14 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
-import { Discount } from "../models/models";
-import {
-  addDiscountToCart,
-  discount,
-  calculatorTotalAmount,
-} from "../store/cartSlice";
+import { discount, calculatorTotalAmount } from "../../store/cartSlice";
+import { Service } from "../../models/models";
+import ServiceMenuCard from "./ServiceMenuCard";
+import Modal from "../../shared/Modal";
+import CloseIcon from "../../shared/CloseIcon";
 
-import DiscountCard from "./DiscountCard";
-import CloseIcon from "../shared/CloseIcon";
-import Modal from "../shared/Modal";
-
-const DiscountMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  const [discountList, setDiscountList] = useState<Discount[]>([]);
+const ServiceMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const [serviceList, setServiceList] = useState<Service[]>([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -22,41 +17,35 @@ const DiscountMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       "https://us-central1-colavolab.cloudfunctions.net/requestAssignmentCalculatorData";
     const fetchData = async () => {
       try {
-        const discountArray = [];
+        const itemsArray = [];
         const response = await fetch(url);
-        const { discounts } = await response.json();
+        const { items } = await response.json();
 
-        for (const discount in discounts) {
-          discountArray.push(discounts[discount]);
+        for (const item in items) {
+          itemsArray.push(items[item]);
         }
 
-        setDiscountList(discountArray);
+        setServiceList(itemsArray);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
   }, []);
+
   return (
     <Modal onClose={onClose}>
-      <DiscountMenuWrapper>
-        <DiscountMenuHeader>
-          <DiscountMenuTitle>할인 메뉴</DiscountMenuTitle>
+      <ServiceMenuWrapper>
+        <ServiceMenuHeader>
+          <ServiceMenuTitle>시술 메뉴</ServiceMenuTitle>
           <CloseIcon width={24} onClose={onClose} />
-        </DiscountMenuHeader>
-        <DiscountMenuBody>
-          {discountList.map((discountItem) => (
-            <DiscountCard
-              key={discountItem.name}
-              discountItem={discountItem}
-              onClick={() => {
-                dispatch(addDiscountToCart(discountItem));
-              }}
-            />
+        </ServiceMenuHeader>
+        <ServiceMenuBody>
+          {serviceList.map((service) => (
+            <ServiceMenuCard key={service.name} service={service} />
           ))}
-        </DiscountMenuBody>
-        <DiscountMenuFooter>
-          <DiscountMenuTotalAmountWrapper></DiscountMenuTotalAmountWrapper>
+        </ServiceMenuBody>
+        <ServiceMenuFooter>
           <NextStepButton
             onClick={() => {
               dispatch(discount());
@@ -64,15 +53,15 @@ const DiscountMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
               onClose();
             }}
           >
-            할 인 적 용
+            다 음
           </NextStepButton>
-        </DiscountMenuFooter>
-      </DiscountMenuWrapper>
+        </ServiceMenuFooter>
+      </ServiceMenuWrapper>
     </Modal>
   );
 };
 
-const DiscountMenuWrapper = styled.div`
+const ServiceMenuWrapper = styled.div`
   width: 538px;
   border: 1px solid lightgray;
   border-radius: 10px;
@@ -81,12 +70,12 @@ const DiscountMenuWrapper = styled.div`
   padding: 35px;
 `;
 
-const DiscountMenuHeader = styled.div`
+const ServiceMenuHeader = styled.div`
   display: flex;
   margin-bottom: 30px;
 `;
 
-const DiscountMenuTitle = styled.div`
+const ServiceMenuTitle = styled.div`
   width: 100%;
   font-size: 20px;
   font-weight: bold;
@@ -95,7 +84,7 @@ const DiscountMenuTitle = styled.div`
   text-align: center;
 `;
 
-const DiscountMenuBody = styled.div`
+const ServiceMenuBody = styled.div`
   height: 400px;
   display: flex;
   flex-direction: column;
@@ -111,13 +100,9 @@ const DiscountMenuBody = styled.div`
   }
 `;
 
-const DiscountMenuFooter = styled.div`
+const ServiceMenuFooter = styled.div`
   display: flex;
   flex-direction: column;
-`;
-const DiscountMenuTotalAmountWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
 `;
 
 const NextStepButton = styled.button`
@@ -129,9 +114,9 @@ const NextStepButton = styled.button`
   letter-spacing: -0.3px;
   border-radius: 8px;
   border: none;
-  background-color: rgb(255, 118, 171);
+  background-color: rgb(93, 149, 255);
   color: rgb(255, 255, 255);
   cursor: pointer;
 `;
 
-export default DiscountMenu;
+export default ServiceMenu;

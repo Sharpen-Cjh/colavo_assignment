@@ -1,11 +1,10 @@
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
-import { DiscountItem } from "../store/types";
-
-import Modal from "../shared/Modal";
-import CloseIcon from "../shared/CloseIcon";
-import { discountChange, calculatorTotalAmount } from "../store/cartSlice";
+import { DiscountItem } from "../../store/types";
+import Modal from "../../shared/Modal";
+import CloseIcon from "../../shared/CloseIcon";
+import { discountChange, calculatorTotalAmount } from "../../store/cartSlice";
 
 type DiscountChangeMenuProps = {
   onClose: () => void;

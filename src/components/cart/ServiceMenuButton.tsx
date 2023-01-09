@@ -1,15 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 
-import PlusButtonIcon from "../shared/PlusButtonIcon";
+import PlusButtonIcon from "../../shared/PlusButtonIcon";
 
-const DiscountMenuButton: React.FC<{ onShowDiscountMenu: () => void }> = ({
-  onShowDiscountMenu,
+const ServiceMenuButton: React.FC<{ onShowServiceMenu: () => void }> = ({
+  onShowServiceMenu,
 }) => {
   return (
-    <Button onClick={onShowDiscountMenu}>
-      <PlusButtonIcon width={20} height={20} fill={"rgb(255, 118, 171)"} />
-      <ButtonName>할인 메뉴</ButtonName>
+    <Button onClick={onShowServiceMenu}>
+      <PlusButtonIcon width={20} height={20} fill={"rgb(93, 149, 255)"} />
+      <ButtonName>시술 메뉴</ButtonName>
     </Button>
   );
 };
@@ -36,4 +36,4 @@ const ButtonName = styled.div`
   margin-left: 15px;
 `;
 
-export default DiscountMenuButton;
+export default ServiceMenuButton;

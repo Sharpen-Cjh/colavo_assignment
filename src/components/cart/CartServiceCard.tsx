@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
-import { ServiceItem } from "../store/types";
+import { ServiceItem } from "../../store/types";
 import {
   addQuantity,
   removeQuantity,
@@ -9,15 +9,14 @@ import {
   discount,
   addNameToCart,
   calculatorTotalAmount,
-} from "../store/cartSlice";
-
-import CloseIcon from "../shared/CloseIcon";
+} from "../../store/cartSlice";
+import CloseIcon from "../../shared/CloseIcon";
 
 type ServiceItemCardProp = {
   serviceItem: ServiceItem;
 };
 
-const ServiceItemCard = ({ serviceItem }: ServiceItemCardProp) => {
+const CartServiceCard = ({ serviceItem }: ServiceItemCardProp) => {
   const dispatch = useDispatch();
 
   return (
@@ -130,4 +129,4 @@ const CardRightSide = styled.div`
   align-items: center;
 `;
 
-export default ServiceItemCard;
+export default CartServiceCard;

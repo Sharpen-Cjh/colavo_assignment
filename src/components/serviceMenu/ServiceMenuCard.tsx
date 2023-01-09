@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
-import { RootState } from "../store/store";
-import { addToCart, addNameToCart } from "../store/cartSlice";
-import { Service } from "../models/models";
+import { RootState } from "../../store/store";
+import { addToCart, addNameToCart } from "../../store/cartSlice";
+import { Service } from "../../models/models";
 
 type ServiceProp = {
   service: Service;
